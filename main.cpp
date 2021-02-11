@@ -39,7 +39,16 @@ Ball resetBall(double p_windowWidth,
                  p_radius);
 }
 
-std::vector<Rectangle> resetBlocks(int& currentAmount, int amount, double p_windowWidth, double p_wallSize)
+void resetBlock(std::vector<Rectangle>& blocks, int& currentAmount)
+{
+    currentAmount = 0;
+    for (std::size_t i = 0; i < blocks.size(); ++i)
+    {
+        blocks[i].shouldDraw = true;
+    }
+}
+
+std::vector<Rectangle> prepareBlocks(int& currentAmount, int amount, double p_windowWidth, double p_wallSize)
 {
     currentAmount = 0;
     float l_blockSize = 40.0f;
@@ -89,7 +98,7 @@ int main()
 
     Ball ball = resetBall(l_windowWidth, l_windowHeight, 8.0f);
     Rectangle paddle = resetPaddle(l_windowWidth, l_windowHeight, 15.0f, 100.0f);
-    std::vector<Rectangle> l_blocks = resetBlocks(currentAmount, BLOCK_LINES, l_windowWidth, l_wallSize);
+    std::vector<Rectangle> l_blocks = prepareBlocks(currentAmount, BLOCK_LINES, l_windowWidth, l_wallSize);
 
     std::array<Rectangle, 3> l_walls = { Rectangle{ sf::Vector2f(0.0f, 0.0f),
         sf::Vector2f(l_wallSize,
@@ -165,7 +174,7 @@ int main()
         {
             ball = resetBall(l_windowWidth, l_windowHeight, 8.0f);
             paddle = resetPaddle(l_windowWidth, l_windowHeight, 15.0f, 100.0f);
-            l_blocks = resetBlocks(currentAmount, BLOCK_LINES, l_windowWidth, l_wallSize);
+            resetBlock(l_blocks, currentAmount);
             points = 0;
         }
         auto l_collider = CollsionChecker::checkIfBallAndRectangleCollide(paddle, ball);
@@ -207,7 +216,7 @@ int main()
         {
             ball = resetBall(l_windowWidth, l_windowHeight, 8.0f);
             paddle = resetPaddle(l_windowWidth, l_windowHeight, 15.0f, 100.0f);
-            l_blocks = resetBlocks(currentAmount, BLOCK_LINES, l_windowWidth, l_wallSize);
+            l_blocks = prepareBlocks(currentAmount, BLOCK_LINES, l_windowWidth, l_wallSize);
             points = 0;
         }
 
