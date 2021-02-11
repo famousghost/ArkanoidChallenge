@@ -173,7 +173,7 @@ int main()
         {
             sf::Vector2f l_paddleCenter = paddle.m_posiiton + sf::Vector2f(paddle.size.x / 2.0f, paddle.size.y);
             sf::Vector2f l_fromCenterToBall = sf::Vector2f(ball.m_position.x - l_paddleCenter.x, ball.m_position.y - l_paddleCenter.y);
-            ball.m_direction = Transformations::normalize(sf::Vector2f(-ball.m_direction.x + l_fromCenterToBall.x, -ball.m_direction.y + l_fromCenterToBall.y));
+            ball.m_direction = Transformations::normalize(sf::Vector2f(l_fromCenterToBall.x, l_fromCenterToBall.y));
         }
 
         for (const auto& wall : l_walls)
@@ -181,8 +181,7 @@ int main()
             auto l_collider = CollsionChecker::checkIfBallAndRectangleCollide(wall, ball);
             if (l_collider.m_isCollide)
             {
-                ball.m_direction += 2.0f * wall.m_normal;
-                ball.m_direction = Transformations::normalize(ball.m_direction);
+                ball.m_direction = Transformations::normalize(Transformations::reflect(ball.m_direction, wall.m_normal));
             }
             m_window.draw(wall.m_shape);
         }
@@ -198,7 +197,7 @@ int main()
                     block.shouldDraw = false;
                     sf::Vector2f l_blockCenter = block.m_posiiton + sf::Vector2f(block.size.x / 2.0f, block.size.y / 2.0f);
                     sf::Vector2f l_fromCenterToBall = sf::Vector2f(ball.m_position.x - l_blockCenter.x, ball.m_position.y - l_blockCenter.y);
-                    ball.m_direction = Transformations::normalize(sf::Vector2f(-ball.m_direction.x + l_fromCenterToBall.x, -ball.m_direction.y + l_fromCenterToBall.y));
+                    ball.m_direction = Transformations::normalize(sf::Vector2f(l_fromCenterToBall.x, l_fromCenterToBall.y));
                 }
                 m_window.draw(block.m_shape);
             }
